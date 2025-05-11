@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo de Adivinhação</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo de Adivinhação</h1>
+  <p>Estou pensando em um número entre 1 e 10.</p>
+  <input type="number" id="palpite" min="1" max="10" placeholder="Digite seu palpite">
+  <button onclick="verificarPalpite()">Tentar</button>
+  <p id="mensagem"></p>
+
+  <script>
+    const numeroSecreto = Math.floor(Math.random() * 10) + 1;
+
+    function verificarPalpite() {
+      const palpite = parseInt(document.getElementById('palpite').value);
+      const mensagem = document.getElementById('mensagem');
+
+      if (palpite === numeroSecreto) {
+        mensagem.textContent = "Parabéns! Você acertou!";
+        mensagem.style.color = "green";
+      } else if (palpite < numeroSecreto) {
+        mensagem.textContent = "Tente um número maior.";
+        mensagem.style.color = "orange";
+      } else {
+        mensagem.textContent = "Tente um número menor.";
+        mensagem.style.color = "orange";
+      }
+    }
+  </script>
+</body>
+</html>
