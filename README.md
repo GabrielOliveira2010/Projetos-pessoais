@@ -1,5 +1,7 @@
 # Projetos-pessoais
-Projetos pessoais criados e pensados por mim.
+Projetos pessoais criados e pensados por mim, para poder aprender mais.
+
+
 🎮 Visão Geral
 Este repositório contém projetos de jogos interativos:
 
