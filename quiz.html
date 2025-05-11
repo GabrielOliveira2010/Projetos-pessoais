@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: Engenharia de Software e Computação</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #5e3ed4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #quiz-container {
+      background: #553dbe;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #000000;
+    }
+    .question {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #000000;
+    }
+    .option {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #000000;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .option:hover {
+      background-color: #747171;
+    }
+    .option.incorrect {
+      background-color: #a5454d;
+      border-color: #47030a;
+    }
+    .option.correct {
+      background-color: #2d793e;
+      border-color: #004610;
+    }
+    .option.correct:hover,
+    .option.incorrect:hover {
+      background-color: #ffffff;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 18px;
+      color: #000000;
+    }
+    .result h2 {
+      color: #000000;
+    }
+    .result p {
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: rgb(197, 186, 125);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container">
+    <h1>Quiz: Engenharia de Software e Computação</h1>
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <button onclick="nextQuestion()">Próxima Pergunta</button>
+  </div>
+  <div id="result" class="result"></div>
+
+  <script>
+    const quiz = [
+      {
+        pergunta: "Qual é a principal função da Engenharia de Software?",
+        opcoes: [
+          "Montar computadores",
+          "Desenvolver software de forma sistemática",
+          "Instalar programas",
+          "Consertar equipamentos"
+        ],
+        correta: 1
+      },
+      {
+        pergunta: "O que é um algoritmo?",
+        opcoes: [
+          "Uma linguagem de programação",
+          "Um tipo de software",
+          "Um conjunto de passos para resolver um problema",
+          "Uma parte do hardware"
+        ],
+        correta: 2
+      },
+      {
+        pergunta: "Qual das opções é um modelo de processo de software?",
+        opcoes: [
+          "Modelo em cascata",
+          "Modelo físico",
+          "Modelo biológico",
+          "Modelo matemático"
+        ],
+        correta: 0
+      },
+      {
+        pergunta: "O que é hardware?",
+        opcoes: [
+          "Programas de computador",
+          "Componentes físicos do computador",
+          "Dados armazenados",
+          "Sistemas operacionais"
+        ],
+        correta: 1
+      },
+      {
+        pergunta: "Qual linguagem é comumente usada no desenvolvimento de software?",
+        opcoes: [
+          "Português",
+          "HTML",
+          "Java",
+          "Windows"
+        ],
+        correta: 2
+      }
+    ];
+
+    let perguntaAtual = 0;
+    let acertos = 0;
+    let respostas = [];
+
+    function mostrarPergunta() {
+      const q = quiz[perguntaAtual];
+      document.getElementById("question").textContent = q.pergunta;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      q.opcoes.forEach((opcao, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = opcao;
+        btn.className = "option";
+        btn.onclick = () => {
+          verificarResposta(index, q);
+        };
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(index, pergunta) {
+      const optionsDiv = document.getElementById("options");
+      const btns = optionsDiv.getElementsByClassName("option");
+
+      for (let i = 0; i < btns.length; i++) {
+        const btn = btns[i];
+        if (i === pergunta.correta) {
+          btn.classList.add("correct");
+        } else if (i === index) {
+          btn.classList.add("incorrect");
+        }
+      }
+
+      if (index === pergunta.correta) {
+        acertos++;
+        respostas.push({ pergunta: pergunta.pergunta, resposta: pergunta.opcoes[index], status: 'correta' });
+      } else {
+        respostas.push({ pergunta: pergunta.pergunta, resposta: pergunta.opcoes[index], status: 'incorreta' });
+      }
+
+      document.querySelector('button').disabled = true;
+    }
+
+    function nextQuestion() {
+      perguntaAtual++;
+      document.querySelector('button').disabled = false;
+      if (perguntaAtual < quiz.length) {
+        mostrarPergunta();
+      } else {
+        mostrarResultado();
+      }
+    }
+
+    function mostrarResultado() {
+      const resultadoDiv = document.getElementById("result");
+      resultadoDiv.innerHTML = `<h2>Você acertou ${acertos} de ${quiz.length} perguntas!</h2>`;
+      
+      respostas.forEach(resposta => {
+        const p = document.createElement("p");
+        p.innerHTML = `<strong>${resposta.pergunta}</strong><br>
+                      Sua resposta: <span class="${resposta.status}">${resposta.resposta}</span>`;
+        resultadoDiv.appendChild(p);
+      });
+    }
+
+    mostrarPergunta();
+  </script>
+</body>
+</html>
